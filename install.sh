@@ -48,6 +48,10 @@ create_symlink "$DOTFILES_DIR/.vimrc" "$HOME/.vimrc"
 create_symlink "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
 create_symlink "$DOTFILES_DIR/.default-gems" "$HOME/.default-gems"
 
+# neovim設定
+mkdir -p "$HOME/.config"
+create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+
 echo ""
 echo "==================================="
 echo "セットアップが完了しました！"

@@ -7,6 +7,7 @@
 - `.zshrc` - Zsh設定
 - `.tmux.conf` - tmux設定
 - `.vimrc` - Vim設定
+- `nvim/` - Neovim設定（~/.config/nvim/）
 - `.gitconfig` - Git設定
 - `.default-gems` - rbenvのデフォルトgem
 
@@ -57,6 +58,8 @@ git push
 ├── .zshrc             # Zsh設定
 ├── .tmux.conf         # tmux設定
 ├── .vimrc             # Vim設定
+├── nvim/              # Neovim設定ディレクトリ
+│   └── init.vim       # Neovim初期化ファイル
 ├── .gitconfig         # Git設定
 └── .default-gems      # rbenv default gems
 ```
