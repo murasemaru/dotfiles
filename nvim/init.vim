@@ -37,6 +37,12 @@ let mapleader = " "
 " Escの代わりにjj
 inoremap jj <Esc>
 
+" インサートモードでEmacs風カーソル移動
+inoremap <C-p> <Up>
+inoremap <C-n> <Down>
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+
 " 保存
 nnoremap <Leader>w :w<CR>
 
@@ -50,3 +56,38 @@ syntax on
 
 " カラースキーム
 colorscheme default
+
+" ===== 補完設定 =====
+
+" 補完メニューの動作設定
+set completeopt=menuone,noselect,preview
+
+" 補完候補の選択はTabとShift-Tabで行う（C-p/C-nはカーソル移動に使うため）
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Enterで補完確定
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
+" 自動補完のトリガー設定（文字入力時に補完を表示）
+augroup AutoComplete
+  autocmd!
+  autocmd TextChangedI * call AutoTriggerComplete()
+augroup END
+
+" 自動補完トリガー関数
+function! AutoTriggerComplete()
+  " 補完メニューが既に表示されている場合は何もしない
+  if pumvisible()
+    return
+  endif
+
+  " カーソル前の文字を取得
+  let l:line = getline('.')
+  let l:col = col('.') - 1
+
+  " 2文字以上入力されていたら補完を開始
+  if l:col > 1 && l:line[l:col - 2] =~# '\w' && l:line[l:col - 1] =~# '\w'
+    call feedkeys("\<C-x>\<C-n>", 'n')
+  endif
+endfunction
