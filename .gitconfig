@@ -1,0 +1,8 @@
+[user]
+	name = shujimurase
+	email = shuji.murase@techouse.jp
+	signingkey = /Users/muraseshuji/.ssh/id_ed25519.bastion
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true

@@ -1,0 +1,41 @@
+# dotfiles .gitignore
+
+# 機密情報を含むファイル
+*.pem
+*.key
+*_rsa
+*_rsa.pub
+*_ed25519
+*_ed25519.pub
+*.credentials
+
+# SSH設定（機密情報を含む可能性）
+.ssh/
+ssh/
+
+# AWS設定（機密情報を含む可能性）
+.aws/
+aws/
+
+# 環境変数ファイル
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Local configuration overrides
+*.local
