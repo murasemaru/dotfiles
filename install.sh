@@ -52,6 +52,18 @@ create_symlink "$DOTFILES_DIR/.default-gems" "$HOME/.default-gems"
 mkdir -p "$HOME/.config"
 create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 
+# VSCode設定
+VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
+if [ -d "$VSCODE_USER_DIR" ]; then
+  echo ""
+  echo "VSCode設定をセットアップします..."
+  create_symlink "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_USER_DIR/settings.json"
+  create_symlink "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.json"
+else
+  echo ""
+  echo "! VSCodeがインストールされていないため、VSCode設定をスキップします"
+fi
+
 echo ""
 echo "==================================="
 echo "セットアップが完了しました！"

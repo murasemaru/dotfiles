@@ -8,6 +8,9 @@
 - `.tmux.conf` - tmux設定
 - `.vimrc` - Vim設定
 - `nvim/` - Neovim設定（~/.config/nvim/）
+- `vscode/` - VSCode設定（~/Library/Application Support/Code/User/）
+  - `settings.json` - エディタ設定
+  - `keybindings.json` - キーバインド設定（Emacs風カーソル移動）
 - `.gitconfig` - Git設定
 - `.default-gems` - rbenvのデフォルトgem
 
@@ -60,9 +63,34 @@ git push
 ├── .vimrc             # Vim設定
 ├── nvim/              # Neovim設定ディレクトリ
 │   └── init.vim       # Neovim初期化ファイル
+├── vscode/            # VSCode設定ディレクトリ
+│   ├── settings.json  # VSCode設定
+│   └── keybindings.json # キーバインド（Emacs風）
 ├── .gitconfig         # Git設定
 └── .default-gems      # rbenv default gems
 ```
+
+## エディタ設定の特徴
+
+### Neovim
+- インサートモードでEmacs風カーソル移動（C-p/C-n/C-f/C-b）
+- 2文字入力で自動補完表示
+- Tab/Shift-Tabで補完候補選択
+
+### VSCode
+- インサートモードでEmacs風カーソル移動（C-p/C-n/C-f/C-b）
+- 文字入力時に即座に補完表示（遅延なし）
+- Tab/Shift-Tabで補完候補選択
+- Vimプラグイン使用時もEmacs風カーソル移動が機能
+
+**共通のキーバインド:**
+- `C-p` : 上に移動
+- `C-n` : 下に移動
+- `C-f` : 右に移動
+- `C-b` : 左に移動
+- `Tab` : 補完候補の次へ
+- `Shift-Tab` : 補完候補の前へ
+- `Enter` : 補完確定
 
 ## 注意事項
 

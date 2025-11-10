@@ -1,0 +1,57 @@
+[
+  // Emacs風カーソル移動（Vimインサートモード）
+  {
+    "key": "ctrl+p",
+    "command": "cursorUp",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "cursorDown",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "cursorRight",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "cursorLeft",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+
+  // Emacs風カーソル移動（Vim未使用時）
+  {
+    "key": "ctrl+p",
+    "command": "cursorUp",
+    "when": "editorTextFocus && !vim.active"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "cursorDown",
+    "when": "editorTextFocus && !vim.active"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "cursorRight",
+    "when": "editorTextFocus && !vim.active"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "cursorLeft",
+    "when": "editorTextFocus && !vim.active"
+  },
+
+  // サジェスト（補完）が表示されている時のナビゲーション
+  {
+    "key": "tab",
+    "command": "selectNextSuggestion",
+    "when": "suggestWidgetVisible"
+  },
+  {
+    "key": "shift+tab",
+    "command": "selectPrevSuggestion",
+    "when": "suggestWidgetVisible"
+  }
+]

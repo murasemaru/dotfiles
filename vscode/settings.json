@@ -1,0 +1,27 @@
+{
+  "git.openRepositoryInParentFolders": "never",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "solargraph.useBundler": false,
+  "solargraph.commandPath": "/Users/muraseshuji/.rbenv/shims/solargraph",
+  "[ruby]": {
+    "editor.defaultFormatter": "castwide.solargraph"
+  },
+  "solargraph.diagnostics": true,
+  "solargraph.formatting": true,
+  "editor.formatOnSave": true,
+  "vim.useSystemClipboard": true,
+
+  // 補完設定（neovimと同様の動作）
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "off",
+    "strings": "on"
+  },
+  "editor.quickSuggestionsDelay": 0,
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.tabCompletion": "on",
+  "editor.suggest.insertMode": "insert",
+  "editor.suggest.showInlineDetails": true
+}
