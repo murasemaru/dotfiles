@@ -86,7 +86,7 @@ alias bers='docker compose exec puma bundle exec rspec --format documentation'
 # プロジェクト起動・停止
 # ========================================
 alias chuw='tmux kill-server ; echo "$CHW_DIR" ; cd "$CHW_DIR" && make up-all && tmuxinator chw'
-alias chuc='tmux kill-server ; cd "$CHC_DIR" && dcdu && tmuxinator chc && cd "$CHW_DIR" && make up-all && tmuxinator chw'
+alias chuc='tmux kill-server ; cd "$CHW_DIR" && make up-all && tmuxinator chw && cd "$CHC_DIR" && dcdu && tmuxinator chc'
 alias chdw='tmux kill-server ; cd "$CHW_DIR" && make down'
 alias chdc='tmux kill-server ; cd "$CHW_DIR" && make down ; cd "$CHC_DIR" && dc down'
 
