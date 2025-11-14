@@ -86,7 +86,7 @@ alias bers='docker compose exec puma bundle exec rspec --format documentation'
 # プロジェクト起動・停止
 # ========================================
 alias chuw='tmux kill-server ; echo "$CHW_DIR" ; cd "$CHW_DIR" && make up-all && tmuxinator chw'
-alias chuc='tmux kill-server ; cd "$CHW_DIR" && make up-all && tmuxinator chw && cd "$CHC_DIR" && dcdu && tmuxinator chc'
+alias chuc='tmux kill-server ; cd "$CHC_DIR" && dcdu && tmuxinator start chc --no-attach && cd "$CHW_DIR" && make up-all && tmuxinator start chw && tmux attach -t chw'
 alias chdw='tmux kill-server ; cd "$CHW_DIR" && make down'
 alias chdc='tmux kill-server ; cd "$CHW_DIR" && make down ; cd "$CHC_DIR" && dc down'
 
@@ -107,6 +107,7 @@ mkdir -p "$MEMO_DIR"
 export CDPATH=".:$HOME"
 
 function memo() {
+  
   if [[ "$1" == "-d" ]] || [[ "$1" == "--date" ]]; then
     # 日付付きメモ
     nvim "$MEMO_DIR/$(date +%Y-%m-%d).txt"
@@ -167,6 +168,9 @@ zle -N zle-line-finish
 # インサートモードでもEmacs風のキーバインドを併用
 bindkey '^A' beginning-of-line      # Ctrl+A: 行頭
 bindkey '^E' end-of-line            # Ctrl+E: 行末
+bindkey '^F' forward-char           # Ctrl+F: 右へ1文字移動
+bindkey '^B' backward-char          # Ctrl+B: 左へ1文字移動
+bindkey '^D' delete-char            # Ctrl+D: カーソル位置の文字を削除
 bindkey '^K' kill-line              # Ctrl+K: カーソルから行末まで削除
 bindkey '^W' backward-kill-word     # Ctrl+W: 単語削除
 bindkey '^U' backward-kill-line     # Ctrl+U: カーソルから行頭まで削除

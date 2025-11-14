@@ -29,6 +29,21 @@ set mouse=a
 " エンコーディング
 set encoding=utf-8
 
+" IME制御設定
+set iminsert=0
+set imsearch=-1
+
+" macOSでIMEをオフにする関数
+function! ImInActivate()
+  call system('osascript -e "tell application \"System Events\" to key code 102"')
+endfunction
+
+" Insertモードを抜けた時にIMEを自動的にオフにする
+augroup ImSwitcher
+  autocmd!
+  autocmd InsertLeave * call ImInActivate()
+augroup END
+
 " ===== キーマッピング =====
 
 " Leaderキーをスペースに
@@ -37,11 +52,17 @@ let mapleader = " "
 " Escの代わりにjj
 inoremap jj <Esc>
 
+" Ctrl+cでInsertモードを抜ける時もIMEをオフ
+inoremap <C-c> <Esc>:call ImInActivate()<CR>
+
 " インサートモードでEmacs風カーソル移動
 inoremap <C-p> <Up>
 inoremap <C-n> <Down>
 inoremap <C-f> <Right>
 inoremap <C-b> <Left>
+inoremap <C-a> <C-o>0
+inoremap <C-e> <C-o>$
+inoremap <C-d> <Del>
 
 " 保存
 nnoremap <Leader>w :w<CR>
