@@ -9,15 +9,6 @@
   // Vim設定
   "vim.useSystemClipboard": true,
 
-  // Solargraph (Ruby Language Server)
-  "solargraph.useBundler": false,
-  "solargraph.commandPath": "/Users/muraseshuji/.rbenv/shims/solargraph",
-  "[ruby]": {
-    "editor.defaultFormatter": "castwide.solargraph"
-  },
-  "solargraph.diagnostics": true,
-  "solargraph.formatting": true,
-
   // エディタ設定
   "editor.formatOnSave": true,
 

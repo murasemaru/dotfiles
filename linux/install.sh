@@ -14,9 +14,22 @@ source "$DOTFILES_DIR/lib/utils.sh"
 
 print_section "Linux専用設定をインストール"
 
-# 現時点ではLinux専用の設定はありません
-# 将来的にLinux固有の設定（例：i3wm、Wayland設定など）をここに追加できます
+# .config ディレクトリ作成
+ensure_config_dir
 
-echo "Linux専用の設定は現時点では未定義です"
+# VSCode設定
+VSCODE_USER_DIR="$HOME/.config/Code/User"
+if [ -d "$VSCODE_USER_DIR" ]; then
+  echo ""
+  echo "VSCode設定をセットアップします..."
+  if [ -f "$LINUX_DIR/vscode/settings.json" ]; then
+    create_symlink "$LINUX_DIR/vscode/settings.json" "$VSCODE_USER_DIR/settings.json"
+  fi
+  if [ -f "$LINUX_DIR/vscode/keybindings.json" ]; then
+    create_symlink "$LINUX_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.json"
+  fi
+else
+  print_warning "VSCodeがインストールされていないため、VSCode設定をスキップします"
+fi
 
 print_success "Linux専用設定のインストールが完了しました"
