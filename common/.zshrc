@@ -106,3 +106,13 @@ export FZF_CTRL_T_OPTS="
 for config_file in ~/.zsh/*.zsh(N); do
   source "$config_file"
 done
+
+# ========================================
+# プライベート設定の読み込み（オプション）
+# ========================================
+# dotfiles-th (Techouse固有設定) が存在する場合のみ読み込む
+if [ -d "$HOME/dotfiles-th/.zsh" ]; then
+  for config_file in $HOME/dotfiles-th/.zsh/*.zsh(N); do
+    source "$config_file"
+  done
+fi
