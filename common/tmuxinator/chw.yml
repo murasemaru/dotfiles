@@ -1,0 +1,14 @@
+name: chw
+root: ~/workspace/CHWorkforce
+
+windows:
+  - PolicyEngine: docker attach chworkforce-bgpolicyengine-1
+  - ParameterPdfGen: docker attach chworkforce-bgparameterpdfgen-1
+  - Mynumber: docker attach chworkforce-bgsecuremynumber-1
+  - HtmlPdfGen: docker attach chworkforce-bghtmlpdfgen-1
+  - FileStore: docker attach chworkforce-bgfilestore-1
+  - redis: docker attach chworkforce-redis-1
+  - sidekiq: docker attach chworkforce-sidekiq-1
+  - webpacker: docker attach chworkforce-webpacker-1
+  - puma: docker attach chworkforce-puma-1
+  - neptune: sshneptune 

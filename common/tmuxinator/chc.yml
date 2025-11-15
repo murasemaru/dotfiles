@@ -1,0 +1,12 @@
+name: chc
+root: ~/workspace/CHCentral
+
+windows:
+  - console: docker attach chcentral-console 
+  - authn: docker attach chcentral-authn 
+  - sidekiq: docker attach chcentral-sidekiq 
+  - PostgreSQL: docker attach chcentral-postgresql-1
+  - DynamoDB-admin: docker attach chcentral-dynamodb-admin-1 
+  - DynamoDB: docker attach chcentral-dynamodb-1
+  - valkey: docker attach chcentral-valkey-1 
+  - neptune: sshneptune

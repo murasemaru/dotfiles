@@ -39,3 +39,7 @@ aws/
 
 # Local configuration overrides
 *.local
+
+# Karabiner自動生成ファイル
+karabiner/assets/
+karabiner/automatic_backups/

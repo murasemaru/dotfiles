@@ -2,73 +2,101 @@
 
 # dotfiles インストールスクリプト
 # 使い方: ./install.sh
+#
+# 対応OS: macOS, Linux (Debian, RedHat系)
 
 set -e
 
-DOTFILES_DIR="$HOME/dotfiles"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "==================================="
-echo "dotfiles セットアップを開始します"
-echo "==================================="
+# ============================================
+# カラー定義
+# ============================================
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# ============================================
+# OS検出
+# ============================================
+detect_os() {
+  case "$(uname -s)" in
+    Linux*)
+      if [ -f /etc/debian_version ]; then
+        echo "debian"
+      elif [ -f /etc/redhat-release ]; then
+        echo "redhat"
+      else
+        echo "linux"
+      fi
+      ;;
+    Darwin*)
+      echo "macos"
+      ;;
+    *)
+      echo "unknown"
+      ;;
+  esac
+}
+
+OS="$(detect_os)"
+
+# ============================================
+# メイン処理
+# ============================================
+
+echo ""
+echo -e "${BLUE}======================================${NC}"
+echo -e "${BLUE}  dotfiles セットアップ${NC}"
+echo -e "${BLUE}======================================${NC}"
+echo ""
+echo -e "検出されたOS: ${GREEN}${OS}${NC}"
+echo ""
 
 # dotfilesディレクトリの存在確認
 if [ ! -d "$DOTFILES_DIR" ]; then
-  echo "エラー: $DOTFILES_DIR が見つかりません"
+  echo -e "${RED}エラー: $DOTFILES_DIR が見つかりません${NC}"
   exit 1
 fi
 
-cd "$DOTFILES_DIR"
-
-# シンボリックリンクを作成する関数
-create_symlink() {
-  local source="$1"
-  local target="$2"
-
-  if [ -L "$target" ]; then
-    echo "✓ $target はすでにシンボリックリンクです（スキップ）"
-  elif [ -f "$target" ] || [ -d "$target" ]; then
-    echo "! $target が存在します。バックアップを作成します..."
-    mv "$target" "${target}.backup.$(date +%Y%m%d_%H%M%S)"
-    ln -s "$source" "$target"
-    echo "✓ $target を作成しました"
-  else
-    ln -s "$source" "$target"
-    echo "✓ $target を作成しました"
-  fi
-}
-
-# 基本設定ファイルのシンボリックリンク作成
-echo ""
-echo "シンボリックリンクを作成します..."
-echo ""
-
-create_symlink "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
-create_symlink "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
-create_symlink "$DOTFILES_DIR/.vimrc" "$HOME/.vimrc"
-create_symlink "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
-create_symlink "$DOTFILES_DIR/.default-gems" "$HOME/.default-gems"
-
-# neovim設定
-mkdir -p "$HOME/.config"
-create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
-
-# VSCode設定
-VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
-if [ -d "$VSCODE_USER_DIR" ]; then
-  echo ""
-  echo "VSCode設定をセットアップします..."
-  create_symlink "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_USER_DIR/settings.json"
-  create_symlink "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.json"
+# 共通設定のインストール
+if [ -f "$DOTFILES_DIR/common/install.sh" ]; then
+  bash "$DOTFILES_DIR/common/install.sh"
 else
-  echo ""
-  echo "! VSCodeがインストールされていないため、VSCode設定をスキップします"
+  echo -e "${RED}エラー: common/install.sh が見つかりません${NC}"
+  exit 1
 fi
 
+# OS固有の設定のインストール
+case "$OS" in
+  macos)
+    if [ -f "$DOTFILES_DIR/macos/install.sh" ]; then
+      bash "$DOTFILES_DIR/macos/install.sh"
+    else
+      echo -e "${YELLOW}警告: macos/install.sh が見つかりません${NC}"
+    fi
+    ;;
+  debian|redhat|linux)
+    if [ -f "$DOTFILES_DIR/linux/install.sh" ]; then
+      bash "$DOTFILES_DIR/linux/install.sh"
+    else
+      echo -e "${YELLOW}警告: linux/install.sh が見つかりません${NC}"
+    fi
+    ;;
+  unknown)
+    echo ""
+    echo -e "${YELLOW}警告: OSを特定できませんでした${NC}"
+    echo "共通設定のみがインストールされました"
+    ;;
+esac
+
 echo ""
-echo "==================================="
-echo "セットアップが完了しました！"
-echo "==================================="
+echo -e "${GREEN}======================================${NC}"
+echo -e "${GREEN}  セットアップが完了しました！${NC}"
+echo -e "${GREEN}======================================${NC}"
 echo ""
 echo "次のコマンドで設定を反映してください:"
-echo "  source ~/.zshrc"
+echo -e "  ${BLUE}source ~/.zshrc${NC}"
 echo ""

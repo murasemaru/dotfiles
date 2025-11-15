@@ -4,10 +4,14 @@
 
 Rails開発を中心としたDockerベースの開発環境で、統一されたEmacs風キーバインドを提供します。
 
+**対応OS:** macOS, Linux (Debian, RedHat系)
+
 ## 目次
 
+- [環境要件](#環境要件)
 - [管理している設定ファイル](#管理している設定ファイル)
 - [セットアップ方法](#セットアップ方法)
+- [ディレクトリ構造](#ディレクトリ構造)
 - [環境の特徴](#環境の特徴)
 - [シェル環境（Zsh）](#シェル環境zsh)
 - [エディタ設定](#エディタ設定)
@@ -15,7 +19,33 @@ Rails開発を中心としたDockerベースの開発環境で、統一された
 - [プロジェクト管理](#プロジェクト管理)
 - [メモ管理](#メモ管理)
 - [開発ツール](#開発ツール)
-- [構造](#構造)
+
+## 環境要件
+
+### 必須
+
+**この dotfiles 環境は zsh を前提としています。**
+
+- **zsh** - デフォルトシェルとして使用
+  - macOS: `brew install zsh`（通常はプリインストール済み）
+  - Debian/Ubuntu: `sudo apt-get install zsh`
+  - RedHat/CentOS: `sudo yum install zsh`
+
+インストールスクリプト（`install.sh`）は以下を自動で行います：
+- zsh のインストール確認
+- デフォルトシェルが zsh でない場合、切り替えを提案
+- 必要に応じて `/etc/shells` への登録
+
+### 推奨
+
+以下のツールは設定で使用されていますが、なくても動作します：
+
+- **Git** - バージョン管理
+- **tmux** - ターミナルマルチプレクサ
+- **Neovim** - モダンなVimエディタ
+- **fzf** - ファジー検索ツール
+- **bat** - catの代替（シンタックスハイライト付き）
+- **rbenv** - Ruby バージョン管理（Ruby開発時）
 
 ## 管理している設定ファイル
 
@@ -67,24 +97,54 @@ git commit -m "Update zsh configuration"
 git push
 ```
 
-## 構造
+## ディレクトリ構造
+
+このdotfilesはクロスプラットフォーム対応で、OS固有の設定を分離して管理します。
 
 ```
 ~/dotfiles/
-├── .gitignore          # Git除外設定
-├── README.md           # このファイル
-├── install.sh          # セットアップスクリプト
-├── .zshrc             # Zsh設定
-├── .tmux.conf         # tmux設定
-├── .vimrc             # Vim設定
-├── nvim/              # Neovim設定ディレクトリ
-│   └── init.vim       # Neovim初期化ファイル
-├── vscode/            # VSCode設定ディレクトリ
-│   ├── settings.json  # VSCode設定
-│   └── keybindings.json # キーバインド（Emacs風）
-├── .gitconfig         # Git設定
-└── .default-gems      # rbenv default gems
+├── install.sh                    # メインセットアップスクリプト（OS自動検出）
+├── README.md                     # このファイル
+├── .gitignore                    # Git除外設定
+│
+├── common/                       # 全OS共通設定
+│   ├── install.sh               # 共通設定インストールスクリプト
+│   ├── .zshrc                   # Zsh設定
+│   ├── .tmux.conf               # tmux設定
+│   ├── .vimrc                   # Vim設定
+│   ├── .gitconfig               # Git設定
+│   ├── .default-gems            # rbenv default gems
+│   ├── .zsh/                    # Zsh設定モジュール（8ファイル）
+│   │   ├── aliases.zsh
+│   │   ├── docker.zsh
+│   │   ├── projects.zsh
+│   │   ├── functions.zsh
+│   │   ├── vim-mode.zsh
+│   │   ├── claude.zsh
+│   │   ├── zshrc-utils.zsh
+│   │   └── README.md
+│   ├── nvim/                    # Neovim設定
+│   └── tmuxinator/              # tmux セッション定義
+│
+├── macos/                        # macOS専用設定
+│   ├── install.sh               # macOS設定インストールスクリプト
+│   ├── karabiner/               # Karabiner設定
+│   └── vscode/                  # VSCode設定
+│       ├── settings.json
+│       └── keybindings.json
+│
+└── linux/                        # Linux専用設定
+    └── install.sh               # Linux設定インストールスクリプト
 ```
+
+### クロスプラットフォーム対応
+
+- **OS自動検出**: `install.sh`がOSを自動検出し、適切な設定のみをインストール
+- **分離された設定**:
+  - `common/` - すべてのOSで共通する設定（Zsh、tmux、Vim、Neovim、Git）
+  - `macos/` - macOS専用（Karabiner、VSCode）
+  - `linux/` - Linux専用（今後追加予定）
+- **保守性**: 各ディレクトリに独立した`install.sh`で管理が容易
 
 ## 環境の特徴
 
