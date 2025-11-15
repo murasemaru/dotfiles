@@ -8,15 +8,14 @@ set -e
 MACOS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$(cd "$MACOS_DIR/.." && pwd)"
 
-# 共通関数ライブラリを読み込み
+# 共通ライブラリを読み込み
 source "$DOTFILES_DIR/lib/functions.sh"
+source "$DOTFILES_DIR/lib/utils.sh"
 
-echo ""
-echo "=== macOS専用設定をインストール ==="
-echo ""
+print_section "macOS専用設定をインストール"
 
 # .config ディレクトリ作成
-mkdir -p "$HOME/.config"
+ensure_config_dir
 
 # Karabiner設定
 if [ -d "$MACOS_DIR/karabiner" ]; then
@@ -37,8 +36,7 @@ if [ -d "$VSCODE_USER_DIR" ]; then
     create_symlink "$MACOS_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.json"
   fi
 else
-  echo "! VSCodeがインストールされていないため、VSCode設定をスキップします"
+  print_warning "VSCodeがインストールされていないため、VSCode設定をスキップします"
 fi
 
-echo ""
-echo "✓ macOS専用設定のインストールが完了しました"
+print_success "macOS専用設定のインストールが完了しました"
