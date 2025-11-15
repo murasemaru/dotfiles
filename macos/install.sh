@@ -6,24 +6,10 @@
 set -e
 
 MACOS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$MACOS_DIR/.." && pwd)"
 
-# シンボリックリンクを作成する関数
-create_symlink() {
-  local source="$1"
-  local target="$2"
-
-  if [ -L "$target" ]; then
-    echo "✓ $target はすでにシンボリックリンクです（スキップ）"
-  elif [ -f "$target" ] || [ -d "$target" ]; then
-    echo "! $target が存在します。バックアップを作成します..."
-    mv "$target" "${target}.backup.$(date +%Y%m%d_%H%M%S)"
-    ln -s "$source" "$target"
-    echo "✓ $target を作成しました"
-  else
-    ln -s "$source" "$target"
-    echo "✓ $target を作成しました"
-  fi
-}
+# 共通関数ライブラリを読み込み
+source "$DOTFILES_DIR/lib/functions.sh"
 
 echo ""
 echo "=== macOS専用設定をインストール ==="

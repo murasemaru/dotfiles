@@ -107,6 +107,9 @@ git push
 ├── README.md                     # このファイル
 ├── .gitignore                    # Git除外設定
 │
+├── lib/                          # 共通関数ライブラリ
+│   └── functions.sh             # 各install.shから参照される共通関数
+│
 ├── common/                       # 全OS共通設定
 │   ├── install.sh               # 共通設定インストールスクリプト
 │   ├── .zshrc                   # Zsh設定
