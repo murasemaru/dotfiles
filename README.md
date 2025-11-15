@@ -4,7 +4,7 @@
 
 Rails開発を中心としたDockerベースの開発環境で、統一されたEmacs風キーバインドを提供します。
 
-**対応OS:** macOS, Linux (Debian, RedHat系)
+**対応OS:** macOS, Linux (Debian, RedHat系), Windows (WSL)
 
 ## 目次
 
@@ -136,18 +136,27 @@ git push
 │       ├── settings.json
 │       └── keybindings.json
 │
-└── linux/                        # Linux専用設定
-    └── install.sh               # Linux設定インストールスクリプト
+├── linux/                        # Linux専用設定
+│   └── install.sh               # Linux設定インストールスクリプト
+│
+└── windows/                      # Windows専用設定（WSL想定）
+    └── install.sh               # Windows設定インストールスクリプト
 ```
 
 ### クロスプラットフォーム対応
 
 - **OS自動検出**: `install.sh`がOSを自動検出し、適切な設定のみをインストール
+  - macOS: `Darwin`
+  - Linux: Debian、RedHat系
+  - Windows: WSL (Windows Subsystem for Linux)
+  - Git Bash: MINGW/MSYS環境
 - **分離された設定**:
   - `common/` - すべてのOSで共通する設定（Zsh、tmux、Vim、Neovim、Git）
   - `macos/` - macOS専用（Karabiner、VSCode）
   - `linux/` - Linux専用（今後追加予定）
+  - `windows/` - Windows専用（WSL想定、今後追加予定）
 - **保守性**: 各ディレクトリに独立した`install.sh`で管理が容易
+- **共通関数**: `lib/functions.sh`に共通関数を集約（DRY原則）
 
 ## 環境の特徴
 

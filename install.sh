@@ -3,7 +3,7 @@
 # dotfiles インストールスクリプト
 # 使い方: ./install.sh
 #
-# 対応OS: macOS, Linux (Debian, RedHat系)
+# 対応OS: macOS, Linux (Debian, RedHat系), Windows (WSL)
 
 set -e
 
@@ -24,7 +24,10 @@ NC='\033[0m' # No Color
 detect_os() {
   case "$(uname -s)" in
     Linux*)
-      if [ -f /etc/debian_version ]; then
+      # WSL環境の検出
+      if grep -qi microsoft /proc/version 2>/dev/null; then
+        echo "wsl"
+      elif [ -f /etc/debian_version ]; then
         echo "debian"
       elif [ -f /etc/redhat-release ]; then
         echo "redhat"
@@ -34,6 +37,9 @@ detect_os() {
       ;;
     Darwin*)
       echo "macos"
+      ;;
+    CYGWIN*|MINGW*|MSYS*)
+      echo "windows"
       ;;
     *)
       echo "unknown"
@@ -83,6 +89,13 @@ case "$OS" in
       bash "$DOTFILES_DIR/linux/install.sh"
     else
       echo -e "${YELLOW}警告: linux/install.sh が見つかりません${NC}"
+    fi
+    ;;
+  wsl|windows)
+    if [ -f "$DOTFILES_DIR/windows/install.sh" ]; then
+      bash "$DOTFILES_DIR/windows/install.sh"
+    else
+      echo -e "${YELLOW}警告: windows/install.sh が見つかりません${NC}"
     fi
     ;;
   unknown)
