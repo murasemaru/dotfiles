@@ -321,21 +321,6 @@ tmuxの操作モード（コマンド、コピー）をEmacs準拠に設定し�
 
 ## プロジェクト管理
 
-### ワークスペース設定
-
-```bash
-# プロジェクトディレクトリ
-$CHW_DIR        # ~/workspace/CHWorkforce
-$CHC_DIR        # ~/workspace/CHCentral
-```
-
-### プロジェクト移動
-
-```bash
-chc             # CHCentralに移動
-chw             # CHWorkforceに移動
-```
-
 ### Docker Compose操作
 
 ```bash
@@ -344,38 +329,7 @@ dcud            # docker compose up -d
 dcdu            # docker compose down && up -d
 ```
 
-### Rails開発（Docker経由）
-
-```bash
-dap             # pumaコンテナにアタッチ
-dr              # docker compose exec puma bundle exec rails
-dmb             # マイグレーション（本番＆テスト両方）
-bers            # RSpec実行（ドキュメント形式）
-```
-
-### プロジェクト一括操作
-
-**CHWorkforce起動:**
-```bash
-chuw            # tmux終了 -> CHWorkforce起動 -> tmuxinator起動
-```
-
-**CHCentral + CHWorkforce起動:**
-```bash
-chuc            # tmux終了 -> CHCentral起動 -> CHWorkforce起動 -> 両方のtmuxinator起動
-```
-
-**プロジェクト停止:**
-```bash
-chdw            # CHWorkforce停止
-chdc            # CHCentral + CHWorkforce停止
-```
-
-### その他のプロジェクト
-
-```bash
-keen            # KeenDemoプロジェクト起動
-```
+プロジェクト固有の設定は `dotfiles-th` リポジトリで管理しています。
 
 ## メモ管理
 
@@ -413,9 +367,7 @@ cd memo         # どこからでもメモディレクトリに移動可能
 
 ### AWS
 
-```bash
-bedrock         # AWS SSO認証（bedrockプロファイル）
-```
+AWS関連の設定は `dotfiles-th` リポジトリで管理しています。
 
 ### iTerm2統合
 
@@ -427,8 +379,7 @@ bedrock         # AWS SSO認証（bedrockプロファイル）
 ## 注意事項
 
 - 機密情報（SSH鍵、AWSクレデンシャルなど）は `.gitignore` で除外されています
-- 機密情報を含む設定ファイルは別途管理してください
-- このリポジトリをプライベートリポジトリとして管理することを推奨します
+- 会社固有の設定は `dotfiles-th` リポジトリ（プライベート）で管理しています
 
 ## 設定ファイルの追加方法
 

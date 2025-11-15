@@ -54,7 +54,7 @@ export EDITOR='nvim'
 # ========================================
 # AWS
 # ========================================
-alias bedrock='aws sso login --profile bedrock'
+# AWS関連の設定は dotfiles-th で管理
 
 # ========================================
 # rbenv

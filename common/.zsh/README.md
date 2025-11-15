@@ -10,7 +10,6 @@
   ├── README.md               # このファイル
   ├── aliases.zsh             # 基本的なエイリアス
   ├── docker.zsh              # Docker/Rails関連コマンド
-  ├── projects.zsh            # CHWorkforce/CHCentral関連
   ├── functions.zsh           # カスタム関数（memo など）
   ├── vim-mode.zsh            # Vi-mode設定
   ├── claude.zsh              # Claude Code + Tmux統合
@@ -29,7 +28,6 @@ ez
 ezm             # ~/.zshrc（メイン設定）
 eza             # aliases.zsh
 ezd             # docker.zsh
-ezp             # projects.zsh
 ezf             # functions.zsh
 ezv             # vim-mode.zsh
 ezc             # claude.zsh
@@ -177,32 +175,7 @@ bers            # RSpec実行
 
 ## 🏢 プロジェクト管理
 
-### ディレクトリ移動
-
-```bash
-chw             # CHWorkforce へ移動
-chc             # CHCentral へ移動
-```
-
-### プロジェクト起動・停止
-
-```bash
-# CHWorkforce
-chuw            # CHWorkforce起動（tmuxinator使用）
-chdw            # CHWorkforce停止
-
-# CHCentral + CHWorkforce
-chuc            # 両方起動
-chdc            # 両方停止
-```
-
-**重要**: これらのコマンドは `chw`/`chc` セッションのみを終了し、`claude-*` セッションは保護されます。
-
-### SSH
-
-```bash
-sshneptune      # Neptune サーバーへ接続
-```
+プロジェクト固有の設定やコマンドは `dotfiles-th` リポジトリで管理しています。
 
 ## ⌨️ Vi-mode
 
@@ -245,8 +218,6 @@ cc              # 行削除してインサートモード
 ```bash
 vim             # nvim
 vi              # nvim
-bedrock         # AWS SSO ログイン（bedrock profile）
-keen            # KeenDemo起動
 ```
 
 ## 🔧 トラブルシューティング
@@ -345,11 +316,6 @@ claude project-a
 
 # プロジェクトB
 claude project-b
-
-# デタッチ (Ctrl+b, d)
-
-# CHWorkforce作業
-chuw
 
 # 後で ca で各セッションを行き来
 ```
