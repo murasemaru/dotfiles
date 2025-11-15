@@ -117,15 +117,14 @@ git push
 │   ├── .vimrc                   # Vim設定
 │   ├── .gitconfig               # Git設定
 │   ├── .default-gems            # rbenv default gems
-│   ├── .zsh/                    # Zsh設定モジュール（8ファイル）
-│   │   ├── aliases.zsh
-│   │   ├── docker.zsh
-│   │   ├── projects.zsh
-│   │   ├── functions.zsh
-│   │   ├── vim-mode.zsh
-│   │   ├── claude.zsh
-│   │   ├── zshrc-utils.zsh
-│   │   └── README.md
+│   ├── .zsh/                    # Zsh設定モジュール（6ファイル）
+│   │   ├── aliases.zsh          # 基本エイリアス
+│   │   ├── docker.zsh           # Docker関連
+│   │   ├── functions.zsh        # カスタム関数
+│   │   ├── vim-mode.zsh         # Vi-mode設定
+│   │   ├── claude.zsh           # Claude Code統合
+│   │   ├── zshrc-utils.zsh      # 設定管理
+│   │   └── README.md            # ドキュメント
 │   ├── nvim/                    # Neovim設定
 │   └── tmuxinator/              # tmux セッション定義
 │
