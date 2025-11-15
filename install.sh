@@ -19,34 +19,13 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # ============================================
+# ライブラリ読み込み
+# ============================================
+source "$DOTFILES_DIR/lib/os_detect.sh"
+
+# ============================================
 # OS検出
 # ============================================
-detect_os() {
-  case "$(uname -s)" in
-    Linux*)
-      # WSL環境の検出
-      if grep -qi microsoft /proc/version 2>/dev/null; then
-        echo "wsl"
-      elif [ -f /etc/debian_version ]; then
-        echo "debian"
-      elif [ -f /etc/redhat-release ]; then
-        echo "redhat"
-      else
-        echo "linux"
-      fi
-      ;;
-    Darwin*)
-      echo "macos"
-      ;;
-    CYGWIN*|MINGW*|MSYS*)
-      echo "windows"
-      ;;
-    *)
-      echo "unknown"
-      ;;
-  esac
-}
-
 OS="$(detect_os)"
 
 # ============================================
