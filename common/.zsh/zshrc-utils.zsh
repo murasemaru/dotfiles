@@ -29,11 +29,10 @@ function ez() {
 alias ezm='$EDITOR ~/.zshrc'                    # main
 alias eza='$EDITOR ~/.zsh/aliases.zsh'          # aliases
 alias ezd='$EDITOR ~/.zsh/docker.zsh'           # docker
-alias ezp='$EDITOR ~/.zsh/projects.zsh'         # projects
-alias ezc='$EDITOR ~/.zsh/claude.zsh'           # claude
 alias ezv='$EDITOR ~/.zsh/vim-mode.zsh'         # vim-mode
 alias ezf='$EDITOR ~/.zsh/functions.zsh'        # functions
 alias ezu='$EDITOR ~/.zsh/zshrc-utils.zsh'      # utils
+alias ezp='$EDITOR ~/.zsh/package-tracking.zsh' # package tracking
 alias ezall='$EDITOR ~/.zshrc ~/.zsh/*.zsh'     # 全て開く
 
 # rz コマンド：.zshrc をリロード
