@@ -47,12 +47,12 @@ brew() {
           # すでに存在するかチェック
           if [ "$is_cask" = true ]; then
             if grep -q "^cask \"${package}\"" "$brewfile"; then
-              echo "✓ ${package} はすでに ${brewfile} に記録されています"
+              echo "✓ ${package} はすでに packages/macos.brewfile に記録されています"
               continue
             fi
           else
             if grep -q "^brew \"${package}\"" "$brewfile"; then
-              echo "✓ ${package} はすでに ${brewfile} に記録されています"
+              echo "✓ ${package} はすでに packages/macos.brewfile に記録されています"
               continue
             fi
           fi
@@ -60,16 +60,16 @@ brew() {
 
         # ユーザーに確認
         echo ""
-        read -q "REPLY?${package} を dotfiles/packages に追加しますか？ (y/N): "
+        read -q "REPLY?${package} を packages/macos.brewfile に追加しますか？ (y/N): "
         echo ""
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           # Brewfileに追記
           if [ "$is_cask" = true ]; then
             echo "cask \"${package}\"" >> "$brewfile"
-            echo "✓ cask \"${package}\" を ${brewfile} に追加しました"
+            echo "✓ cask \"${package}\" を packages/macos.brewfile に追加しました"
           else
             echo "brew \"${package}\"" >> "$brewfile"
-            echo "✓ brew \"${package}\" を ${brewfile} に追加しました"
+            echo "✓ brew \"${package}\" を packages/macos.brewfile に追加しました"
           fi
         fi
       done
@@ -88,19 +88,19 @@ _track_apt_packages() {
     if [ -f "$aptfile" ]; then
       # すでに存在するかチェック
       if grep -q "^${package}$" "$aptfile"; then
-        echo "✓ ${package} はすでに ${aptfile} に記録されています"
+        echo "✓ ${package} はすでに packages/deb-apt.txt に記録されています"
         continue
       fi
     fi
 
     # ユーザーに確認
     echo ""
-    read -q "REPLY?${package} を dotfiles/packages に追加しますか？ (y/N): "
+    read -q "REPLY?${package} を packages/deb-apt.txt に追加しますか？ (y/N): "
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       # apt.txtに追記
       echo "${package}" >> "$aptfile"
-      echo "✓ ${package} を ${aptfile} に追加しました"
+      echo "✓ ${package} を packages/deb-apt.txt に追加しました"
     fi
   done
 }
@@ -257,19 +257,19 @@ if command -v choco >/dev/null 2>&1; then
           if [ -f "$chocofile" ]; then
             # すでに存在するかチェック
             if grep -q "^${package}$" "$chocofile"; then
-              echo "✓ ${package} はすでに ${chocofile} に記録されています"
+              echo "✓ ${package} はすでに packages/win-choco.txt に記録されています"
               continue
             fi
           fi
 
           # ユーザーに確認
           echo ""
-          read -q "REPLY?${package} を dotfiles/packages に追加しますか？ (y/N): "
+          read -q "REPLY?${package} を packages/win-choco.txt に追加しますか？ (y/N): "
           echo ""
           if [[ $REPLY =~ ^[Yy]$ ]]; then
             # choco.txtに追記
             echo "${package}" >> "$chocofile"
-            echo "✓ ${package} を ${chocofile} に追加しました"
+            echo "✓ ${package} を packages/win-choco.txt に追加しました"
           fi
         done
       fi

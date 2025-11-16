@@ -397,22 +397,22 @@ cd memo         # どこからでもメモディレクトリに移動可能
 ```bash
 # macOS
 brew install ripgrep
-# → ripgrep を dotfiles/packages に追加しますか？ (y/N):
+# → ripgrep を packages/macos.brewfile に追加しますか？ (y/N):
 
 brew install --cask notion
-# → notion を dotfiles/packages に追加しますか？ (y/N):
+# → notion を packages/macos.brewfile に追加しますか？ (y/N):
 
 # Linux
 sudo apt install htop
-# → htop を dotfiles/packages に追加しますか？ (y/N):
+# → htop を packages/deb-apt.txt に追加しますか？ (y/N):
 
 # apt-get でも動作します
 sudo apt-get install htop
-# → htop を dotfiles/packages に追加しますか？ (y/N):
+# → htop を packages/deb-apt.txt に追加しますか？ (y/N):
 
 # Windows
 choco install nodejs
-# → nodejs を dotfiles/packages に追加しますか？ (y/N):
+# → nodejs を packages/win-choco.txt に追加しますか？ (y/N):
 ```
 
 **記録されるファイル:**
