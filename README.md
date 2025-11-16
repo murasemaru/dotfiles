@@ -101,27 +101,32 @@ source ~/.zshrc
 
 **インストールスクリプトの機能:**
 - **自動依存関係チェック**: パッケージファイル（macos.brewfile、deb-apt.txt など）に記載されているソフトウェアの不足を検出
-- **インタラクティブインストール**: 不足しているソフトウェアをインストールするか確認
+- **逐次確認インストール**: 各パッケージごとに個別に確認しながらインストール
 - Oh My Zsh、fzf などの主要ツールも個別に確認
-- `--packages` オプションで一括インストール（各パッケージごとに確認）
+- `--packages` オプションで直接インストール開始
 - パッケージマネージャー（Homebrew、apt、choco）が無い場合は先にインストールが必要
 - 詳細は `packages/manual.md` を参照
 
-**依存関係チェック例:**
+**インストール確認例:**
 ```
 ==========================================
-  ソフトウェア依存関係チェック
+  パッケージインストール
 ==========================================
 
-⚠️  以下のソフトウェアがインストールされていません:
-  - tmux (Homebrew formula)
-  - neovim (Homebrew formula)
-  - fzf (Homebrew formula)
-  - visual-studio-code (Homebrew cask)
+packages/ に記載されているソフトウェアの一部がインストールされていません。
 
-これらのソフトウェアは dotfiles の設定で使用されます。
+今すぐインストールしますか？ (y/N): y
 
-今すぐインストールしますか？ (y/N):
+✓ git はすでにインストール済みです（スキップ）
+
+brew install tmux を実行しますか？ (y/N): y
+==> Installing tmux...
+
+brew install neovim を実行しますか？ (y/N): y
+==> Installing neovim...
+
+brew install --cask visual-studio-code を実行しますか？ (y/N): n
+  → visual-studio-code をスキップしました
 ```
 
 ### 既存マシンでの使用

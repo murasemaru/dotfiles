@@ -61,7 +61,8 @@ check_missing_apt_packages() {
     [[ "$package" =~ ^# ]] && continue
     [[ -z "$package" ]] && continue
 
-    if ! dpkg -l | grep -q "^ii  ${package} "; then
+    # dpkg-query を使ってより正確にチェック
+    if ! dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "install ok installed"; then
       missing+=("$package")
     fi
   done < "$aptfile"
@@ -69,15 +70,14 @@ check_missing_apt_packages() {
   echo "${missing[@]}"
 }
 
-# 不足ソフトウェアの表示とインストール提案
+# 不足ソフトウェアの確認とインストール提案
 prompt_install_missing_software() {
   local os_type="$1"
 
-  echo ""
-  echo "=========================================="
-  echo "  ソフトウェア依存関係チェック"
-  echo "=========================================="
-  echo ""
+  # --packages フラグが有効な場合はスキップ（後でinstall_packagesが実行される）
+  if [ "$INSTALL_PACKAGES" = true ]; then
+    return 0
+  fi
 
   local missing_packages=()
 
@@ -89,43 +89,22 @@ prompt_install_missing_software() {
       missing_packages=($(check_missing_apt_packages))
       ;;
     *)
-      echo "このOSでは自動チェックをサポートしていません"
-      echo ""
       return 0
       ;;
   esac
 
-  if [ ${#missing_packages[@]} -eq 0 ]; then
-    echo "✓ パッケージファイルに記載されているソフトウェアはすべてインストールされています"
+  # 不足パッケージがある場合のみ確認
+  if [ ${#missing_packages[@]} -gt 0 ]; then
     echo ""
-    return 0
-  fi
-
-  echo "⚠️  以下のソフトウェアがインストールされていません:"
-  echo ""
-  for item in "${missing_packages[@]}"; do
-    if [[ "$item" =~ ^brew: ]]; then
-      echo "  - ${item#brew:} (Homebrew formula)"
-    elif [[ "$item" =~ ^cask: ]]; then
-      echo "  - ${item#cask:} (Homebrew cask)"
-    else
-      echo "  - $item"
-    fi
-  done
-  echo ""
-
-  # --packages フラグの確認
-  if [ "$INSTALL_PACKAGES" = true ]; then
-    echo "パッケージインストールが有効になっています。"
-    echo "これらのソフトウェアは後ほどインストール処理で確認されます。"
-  else
-    echo "これらのソフトウェアは dotfiles の設定で使用されます。"
+    echo "=========================================="
+    echo "  パッケージインストール"
+    echo "=========================================="
+    echo ""
+    echo "packages/ に記載されているソフトウェアの一部がインストールされていません。"
     echo ""
     read -p "今すぐインストールしますか？ (y/N): " response
     if [[ "$response" =~ ^[Yy]$ ]]; then
-      # INSTALL_PACKAGES フラグを有効にして再実行を促す
       echo ""
-      echo "インストールを開始します..."
       INSTALL_PACKAGES=true
       source "$DOTFILES_DIR/lib/package_installer.sh"
       install_packages "$os_type"
@@ -133,11 +112,9 @@ prompt_install_missing_software() {
       echo ""
       echo "後でインストールする場合は以下のコマンドを実行してください:"
       echo -e "  ${BLUE}./install.sh --packages${NC}"
+      echo ""
     fi
   fi
-
-  echo ""
-  return 1
 }
 
 # Oh My Zsh のチェック

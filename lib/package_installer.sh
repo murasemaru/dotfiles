@@ -153,7 +153,7 @@ install_debian_packages() {
     [[ -z "$package" ]] && continue
 
     # すでにインストール済みか確認
-    if dpkg -l | grep -q "^ii  ${package} "; then
+    if dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "install ok installed"; then
       echo "✓ $package はすでにインストール済みです（スキップ）"
     else
       read -p "apt-get install $package を実行しますか？ (y/N): " response
