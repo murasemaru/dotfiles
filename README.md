@@ -403,6 +403,10 @@ brew install --cask notion
 # → notion を dotfiles/packages に追加しますか？ (y/N):
 
 # Linux
+sudo apt install htop
+# → htop を dotfiles/packages に追加しますか？ (y/N):
+
+# apt-get でも動作します
 sudo apt-get install htop
 # → htop を dotfiles/packages に追加しますか？ (y/N):
 
