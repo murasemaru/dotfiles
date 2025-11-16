@@ -1,4 +1,0 @@
-# rbenv default gems
-# 新しいRubyをインストールした際に自動的にインストールされるgem
-tmuxinator
-bundler

@@ -43,7 +43,6 @@
 - **Neovim** - モダンなVimエディタ
 - **fzf** - ファジー検索ツール
 - **bat** - catの代替（シンタックスハイライト付き）
-- **rbenv** - Ruby バージョン管理（Ruby開発時）
 - **Oh My Zsh** - Zshフレームワーク
 - **Powerlevel10k** - Zshテーマ
 
@@ -62,10 +61,9 @@
 - `nvim/` - Neovim設定（~/.config/nvim/）
   - `init.vim` - Emacs風キーバインド、自動補完、IME制御
 - `vscode/` - VSCode設定（~/Library/Application Support/Code/User/）
-  - `settings.json` - エディタ設定、Ruby開発環境
+  - `settings.json` - エディタ設定
   - `keybindings.json` - キーバインド設定（Emacs風カーソル移動）
 - `.gitconfig` - Git設定（SSH署名有効化）
-- `.default-gems` - rbenvのデフォルトgem（tmuxinator、bundler）
 
 ## セットアップ方法
 
@@ -143,7 +141,6 @@ git push
 │   ├── .tmux.conf               # tmux設定
 │   ├── .vimrc                   # Vim設定
 │   ├── .gitconfig               # Git設定
-│   ├── .default-gems            # rbenv default gems
 │   ├── .zsh/                    # Zsh設定モジュール（6ファイル）
 │   │   ├── aliases.zsh          # 基本エイリアス
 │   │   ├── docker.zsh           # Docker関連
@@ -300,11 +297,6 @@ Space+q         " 終了
 
 ### VSCode
 
-**Ruby開発環境:**
-- Solargraphによるコード補完・フォーマット
-- 保存時の自動フォーマット
-- Vimプラグイン統合
-
 **補完設定:**
 - 文字入力時に即座に補完表示（遅延ゼロ）
 - `Tab` / `Shift+Tab` で補完候補選択
@@ -370,13 +362,6 @@ cd memo         # どこからでもメモディレクトリに移動可能
 メモは `~/memo` ディレクトリに保存されます。
 
 ## 開発ツール
-
-### Ruby管理（rbenv）
-
-- rbenvによるバージョン管理
-- 新しいRubyインストール時に自動インストールされるgem:
-  - `tmuxinator` - tmuxセッション管理
-  - `bundler` - gem依存関係管理
 
 ### Node.js管理（nodebrew）
 

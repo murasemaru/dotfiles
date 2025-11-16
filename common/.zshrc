@@ -64,7 +64,7 @@ export EDITOR='nvim'
 # ========================================
 # rbenv
 # ========================================
-eval "$(rbenv init - zsh)"
+# rbenv設定は dotfiles-th で管理（Techouse業務用）
 
 # ========================================
 # iTerm2 Integration

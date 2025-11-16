@@ -27,7 +27,6 @@ create_symlink "$COMMON_DIR/.zshrc" "$HOME/.zshrc"
 create_symlink "$COMMON_DIR/.tmux.conf" "$HOME/.tmux.conf"
 create_symlink "$COMMON_DIR/.vimrc" "$HOME/.vimrc"
 create_symlink "$COMMON_DIR/.gitconfig" "$HOME/.gitconfig"
-create_symlink "$COMMON_DIR/.default-gems" "$HOME/.default-gems"
 
 # zsh モジュール設定
 create_symlink "$COMMON_DIR/.zsh" "$HOME/.zsh"
