@@ -144,13 +144,14 @@ git push
 │   ├── .vimrc                   # Vim設定
 │   ├── .gitconfig               # Git設定
 │   ├── .default-gems            # rbenv default gems
-│   ├── .zsh/                    # Zsh設定モジュール（6ファイル）
+│   ├── .zsh/                    # Zsh設定モジュール（7ファイル）
 │   │   ├── aliases.zsh          # 基本エイリアス
 │   │   ├── docker.zsh           # Docker関連
 │   │   ├── functions.zsh        # カスタム関数
 │   │   ├── vim-mode.zsh         # Vi-mode設定
 │   │   ├── claude.zsh           # Claude Code統合
 │   │   ├── zshrc-utils.zsh      # 設定管理
+│   │   ├── package-tracking.zsh # パッケージ自動記録
 │   │   └── README.md            # ドキュメント
 │   ├── nvim/                    # Neovim設定
 │   └── tmuxinator/              # tmux セッション定義
@@ -390,6 +391,33 @@ cd memo         # どこからでもメモディレクトリに移動可能
 - シェルプロンプトジャンプ
 - ディレクトリ履歴
 
+### パッケージ自動記録
+
+パッケージマネージャーでソフトウェアをインストールすると、自動的にdotfilesに記録するか確認されます：
+
+```bash
+# macOS
+brew install ripgrep
+# → ripgrep を dotfiles/packages に追加しますか？ (y/N):
+
+brew install --cask notion
+# → notion を dotfiles/packages に追加しますか？ (y/N):
+
+# Linux
+sudo apt-get install htop
+# → htop を dotfiles/packages に追加しますか？ (y/N):
+
+# Windows
+choco install nodejs
+# → nodejs を dotfiles/packages に追加しますか？ (y/N):
+```
+
+**記録されるファイル:**
+- `packages/macos.brewfile` - Homebrew パッケージ
+- `packages/deb-apt.txt` - APT パッケージ
+- `packages/win-choco.txt` - Chocolatey パッケージ
+
+すでに記録済みのパッケージは自動でスキップされます。
 
 ## 設定ファイルの追加方法
 
