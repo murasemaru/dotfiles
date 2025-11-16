@@ -100,24 +100,28 @@ source ~/.zshrc
 ```
 
 **インストールスクリプトの機能:**
-- **自動依存関係チェック**: 不足しているソフトウェアを検出し、インストールを提案
-- **インタラクティブインストール**: Oh My Zsh、fzfなどの主要ツールをインストールするか確認
-- `--packages` オプションでパッケージ管理ファイルからまとめてインストール
+- **自動依存関係チェック**: パッケージファイル（macos.brewfile、deb-apt.txt など）に記載されているソフトウェアの不足を検出
+- **インタラクティブインストール**: 不足しているソフトウェアをインストールするか確認
+- Oh My Zsh、fzf などの主要ツールも個別に確認
+- `--packages` オプションで一括インストール（各パッケージごとに確認）
 - パッケージマネージャー（Homebrew、apt、choco）が無い場合は先にインストールが必要
 - 詳細は `packages/manual.md` を参照
 
 **依存関係チェック例:**
 ```
-⚠️  以下の必須ソフトウェアがインストールされていません:
-  - tmux (Terminal multiplexer)
-  - nvim (Neovim editor)
+==========================================
+  ソフトウェア依存関係チェック
+==========================================
 
-💡 以下の推奨ソフトウェアがインストールされていません:
-  - fzf (Fuzzy finder)
-  - bat (Cat with syntax highlighting)
+⚠️  以下のソフトウェアがインストールされていません:
+  - tmux (Homebrew formula)
+  - neovim (Homebrew formula)
+  - fzf (Homebrew formula)
+  - visual-studio-code (Homebrew cask)
 
-インストールするには以下のコマンドを実行してください:
-  ./install.sh --packages
+これらのソフトウェアは dotfiles の設定で使用されます。
+
+今すぐインストールしますか？ (y/N):
 ```
 
 ### 既存マシンでの使用

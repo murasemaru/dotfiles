@@ -1,99 +1,143 @@
 #!/bin/bash
 
 # ソフトウェア存在チェック機能
-# dotfilesで使用するソフトウェアが存在するかチェックし、
+# パッケージファイルに記載されているソフトウェアが存在するかチェックし、
 # 不足している場合はインストールを提案する
 
-# 必須ソフトウェアリスト（全OS共通）
-REQUIRED_SOFTWARE=(
-  "git:Git version control"
-  "tmux:Terminal multiplexer"
-  "nvim:Neovim editor"
-)
+# macOS: Brewfileから不足パッケージを検出
+check_missing_macos_packages() {
+  local brewfile="$DOTFILES_DIR/packages/macos.brewfile"
+  local missing=()
 
-# 推奨ソフトウェアリスト（全OS共通）
-RECOMMENDED_SOFTWARE=(
-  "fzf:Fuzzy finder"
-  "bat:Cat with syntax highlighting"
-)
+  if [ ! -f "$brewfile" ]; then
+    return 0
+  fi
 
-# ソフトウェアの存在チェック
-check_software() {
-  local software_list=("$@")
-  local missing_software=()
+  # Homebrewがインストールされているかチェック
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "⚠️  Homebrewがインストールされていません"
+    return 1
+  fi
 
-  for item in "${software_list[@]}"; do
-    local cmd="${item%%:*}"
-    local desc="${item#*:}"
+  # Brewfileを解析
+  while IFS= read -r line; do
+    # コメント行と空行をスキップ
+    [[ "$line" =~ ^# ]] && continue
+    [[ -z "$line" ]] && continue
 
-    if ! command -v "$cmd" >/dev/null 2>&1; then
-      missing_software+=("$cmd:$desc")
+    # brew/caskを抽出
+    if [[ "$line" =~ ^brew[[:space:]]+\"([^\"]+)\" ]]; then
+      local package="${BASH_REMATCH[1]}"
+      if ! brew list --formula | grep -q "^${package}$"; then
+        missing+=("brew:$package")
+      fi
+    elif [[ "$line" =~ ^cask[[:space:]]+\"([^\"]+)\" ]]; then
+      local cask="${BASH_REMATCH[1]}"
+      if ! brew list --cask | grep -q "^${cask}$"; then
+        missing+=("cask:$cask")
+      fi
     fi
-  done
+  done < "$brewfile"
 
-  echo "${missing_software[@]}"
+  echo "${missing[@]}"
+}
+
+# Linux: apt パッケージリストから不足パッケージを検出
+check_missing_apt_packages() {
+  local aptfile="$DOTFILES_DIR/packages/deb-apt.txt"
+  local missing=()
+
+  if [ ! -f "$aptfile" ]; then
+    return 0
+  fi
+
+  # aptがインストールされているかチェック
+  if ! command -v apt >/dev/null 2>&1 && ! command -v apt-get >/dev/null 2>&1; then
+    return 0
+  fi
+
+  while IFS= read -r package; do
+    # コメント行と空行をスキップ
+    [[ "$package" =~ ^# ]] && continue
+    [[ -z "$package" ]] && continue
+
+    if ! dpkg -l | grep -q "^ii  ${package} "; then
+      missing+=("$package")
+    fi
+  done < "$aptfile"
+
+  echo "${missing[@]}"
 }
 
 # 不足ソフトウェアの表示とインストール提案
 prompt_install_missing_software() {
+  local os_type="$1"
+
   echo ""
   echo "=========================================="
   echo "  ソフトウェア依存関係チェック"
   echo "=========================================="
   echo ""
 
-  # 必須ソフトウェアのチェック
-  local missing_required=($(check_software "${REQUIRED_SOFTWARE[@]}"))
+  local missing_packages=()
 
-  if [ ${#missing_required[@]} -gt 0 ]; then
-    echo "⚠️  以下の必須ソフトウェアがインストールされていません:"
-    echo ""
-    for item in "${missing_required[@]}"; do
-      local cmd="${item%%:*}"
-      local desc="${item#*:}"
-      echo "  - ${cmd} (${desc})"
-    done
-    echo ""
-  fi
-
-  # 推奨ソフトウェアのチェック
-  local missing_recommended=($(check_software "${RECOMMENDED_SOFTWARE[@]}"))
-
-  if [ ${#missing_recommended[@]} -gt 0 ]; then
-    echo "💡 以下の推奨ソフトウェアがインストールされていません:"
-    echo ""
-    for item in "${missing_recommended[@]}"; do
-      local cmd="${item%%:*}"
-      local desc="${item#*:}"
-      echo "  - ${cmd} (${desc})"
-    done
-    echo ""
-  fi
-
-  # インストール提案
-  if [ ${#missing_required[@]} -gt 0 ] || [ ${#missing_recommended[@]} -gt 0 ]; then
-    echo "これらのソフトウェアは dotfiles の設定で使用されます。"
-    echo ""
-
-    # --packages フラグの確認
-    if [ "$INSTALL_PACKAGES" = true ]; then
-      echo "パッケージインストールが有効になっています。"
-      echo "不足しているソフトウェアは自動的にインストールされます。"
-    else
-      echo "インストールするには以下のコマンドを実行してください:"
-      echo -e "  ${BLUE}./install.sh --packages${NC}"
+  case "$os_type" in
+    macos)
+      missing_packages=($(check_missing_macos_packages))
+      ;;
+    debian|ubuntu|linux)
+      missing_packages=($(check_missing_apt_packages))
+      ;;
+    *)
+      echo "このOSでは自動チェックをサポートしていません"
       echo ""
-      echo "または、手動でインストールする場合:"
-      echo "  packages/ ディレクトリを参照してください"
-    fi
+      return 0
+      ;;
+  esac
 
-    echo ""
-    return 1
-  else
-    echo "✓ すべての必須ソフトウェアがインストールされています"
+  if [ ${#missing_packages[@]} -eq 0 ]; then
+    echo "✓ パッケージファイルに記載されているソフトウェアはすべてインストールされています"
     echo ""
     return 0
   fi
+
+  echo "⚠️  以下のソフトウェアがインストールされていません:"
+  echo ""
+  for item in "${missing_packages[@]}"; do
+    if [[ "$item" =~ ^brew: ]]; then
+      echo "  - ${item#brew:} (Homebrew formula)"
+    elif [[ "$item" =~ ^cask: ]]; then
+      echo "  - ${item#cask:} (Homebrew cask)"
+    else
+      echo "  - $item"
+    fi
+  done
+  echo ""
+
+  # --packages フラグの確認
+  if [ "$INSTALL_PACKAGES" = true ]; then
+    echo "パッケージインストールが有効になっています。"
+    echo "これらのソフトウェアは後ほどインストール処理で確認されます。"
+  else
+    echo "これらのソフトウェアは dotfiles の設定で使用されます。"
+    echo ""
+    read -p "今すぐインストールしますか？ (y/N): " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      # INSTALL_PACKAGES フラグを有効にして再実行を促す
+      echo ""
+      echo "インストールを開始します..."
+      INSTALL_PACKAGES=true
+      source "$DOTFILES_DIR/lib/package_installer.sh"
+      install_packages "$os_type"
+    else
+      echo ""
+      echo "後でインストールする場合は以下のコマンドを実行してください:"
+      echo -e "  ${BLUE}./install.sh --packages${NC}"
+    fi
+  fi
+
+  echo ""
+  return 1
 }
 
 # Oh My Zsh のチェック

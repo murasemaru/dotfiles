@@ -124,7 +124,7 @@ esac
 # ============================================
 # ソフトウェア依存関係チェック
 # ============================================
-prompt_install_missing_software
+prompt_install_missing_software "$OS"
 
 # Oh My Zsh のチェック
 check_oh_my_zsh
