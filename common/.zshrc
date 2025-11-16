@@ -66,6 +66,11 @@ export EDITOR='nvim'
 # ========================================
 # Completion system
 # ========================================
+# Docker CLI completions を読み込む場合は fpath へ追加
+if [ -d "$HOME/.docker/completions" ]; then
+  fpath=($HOME/.docker/completions $fpath)
+fi
+
 autoload -Uz compinit
 compinit
 
