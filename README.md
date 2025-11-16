@@ -174,6 +174,8 @@ git push
 │
 ├── macos/                        # macOS専用設定
 │   ├── install.sh               # macOS設定インストールスクリプト
+│   ├── .zsh/                    # macOS専用zsh設定
+│   │   └── macos.zsh            # Homebrew、iTerm2、Docker等
 │   ├── karabiner/               # Karabiner設定
 │   └── vscode/                  # VSCode設定
 │       ├── settings.json

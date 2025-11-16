@@ -30,15 +30,6 @@ fi
 # PATH設定
 # ========================================
 typeset -U path PATH
-path=(
-  /opt/homebrew/bin(N-/)
-  $path
-)
-
-# nodebrew (Node.js version management)
-if [ -d "$HOME/.nodebrew/current/bin" ]; then
-  path=($HOME/.nodebrew/current/bin $path)
-fi
 
 # ========================================
 # dotfiles 設定
@@ -73,17 +64,8 @@ export EDITOR='nvim'
 # rbenv設定は dotfiles-th で管理（Techouse業務用）
 
 # ========================================
-# iTerm2 Integration
+# Completion system
 # ========================================
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# ========================================
-# Docker CLI completions
-# ========================================
-if [ -d "$HOME/.docker/completions" ]; then
-  fpath=($HOME/.docker/completions $fpath)
-fi
-
 autoload -Uz compinit
 compinit
 

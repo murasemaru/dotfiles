@@ -17,6 +17,17 @@ print_section "macOS専用設定をインストール"
 # .config ディレクトリ作成
 ensure_config_dir
 
+# macOS専用のzsh設定
+if [ -d "$MACOS_DIR/.zsh" ]; then
+  mkdir -p "$HOME/.zsh"
+  for config_file in "$MACOS_DIR/.zsh"/*.zsh; do
+    if [ -f "$config_file" ]; then
+      filename=$(basename "$config_file")
+      create_symlink "$config_file" "$HOME/.zsh/$filename"
+    fi
+  done
+fi
+
 # Karabiner設定
 if [ -d "$MACOS_DIR/karabiner" ]; then
   create_symlink "$MACOS_DIR/karabiner" "$HOME/.config/karabiner"
