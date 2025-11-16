@@ -13,7 +13,27 @@ create_symlink() {
   local target="$2"
 
   if [ -L "$target" ]; then
-    echo "✓ $target はすでにシンボリックリンクです（スキップ）"
+    # シンボリックリンクが既に存在する場合、リンク先を確認
+    local current_link=$(readlink "$target")
+
+    if [ "$current_link" = "$source" ]; then
+      # 正しいリンク先を指している
+      echo "✓ $target は正しいシンボリックリンクです（スキップ）"
+    else
+      # 異なるリンク先を指している
+      echo "! $target は別の場所を指しています"
+      echo "  現在: $current_link"
+      echo "  期待: $source"
+      read -p "  再設定しますか？ (y/N): " response
+
+      if [[ "$response" =~ ^[Yy]$ ]]; then
+        rm "$target"
+        ln -s "$source" "$target"
+        echo "✓ $target を再設定しました"
+      else
+        echo "  スキップしました"
+      fi
+    fi
   elif [ -f "$target" ] || [ -d "$target" ]; then
     echo "! $target が存在します。バックアップを作成します..."
 
