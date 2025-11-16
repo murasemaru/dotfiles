@@ -44,6 +44,15 @@
 - **fzf** - ファジー検索ツール
 - **bat** - catの代替（シンタックスハイライト付き）
 - **rbenv** - Ruby バージョン管理（Ruby開発時）
+- **Oh My Zsh** - Zshフレームワーク
+- **Powerlevel10k** - Zshテーマ
+
+**自動インストール:**
+```bash
+./install.sh --packages
+```
+
+手動インストールの詳細は `packages/` ディレクトリを参照してください。
 
 ## 管理している設定ファイル
 
@@ -62,6 +71,8 @@
 
 ### 新しいマシンでのセットアップ
 
+#### 基本セットアップ（シンボリックリンクのみ）
+
 ```bash
 # リポジトリをクローン
 cd ~
@@ -74,6 +85,26 @@ cd dotfiles
 # 設定を反映
 source ~/.zshrc
 ```
+
+#### フルセットアップ（パッケージ込み）
+
+```bash
+# リポジトリをクローン
+cd ~
+git clone <your-repo-url> dotfiles
+
+# パッケージもインストール
+cd dotfiles
+./install.sh --packages
+
+# 設定を反映
+source ~/.zshrc
+```
+
+**パッケージインストールについて:**
+- `--packages` オプションでOh My Zsh、Powerlevel10k、fzfなどを自動インストール
+- パッケージマネージャー（Homebrew、apt、choco）が無い場合は先にインストールが必要
+- 詳細は `packages/manual.md` を参照
 
 ### 既存マシンでの使用
 

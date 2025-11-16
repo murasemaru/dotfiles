@@ -1,0 +1,18 @@
+# dotfiles - Gitリポジトリ管理
+# フォーマット: <リポジトリURL> <インストール先>
+# コメント行は # で始める
+
+# Oh My Zsh
+https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+
+# Powerlevel10k (Oh My Zshテーマ)
+https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+
+# zsh-autosuggestions (Oh My Zshプラグイン)
+https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+# zsh-syntax-highlighting (Oh My Zshプラグイン)
+https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+# fzf (Linux環境で手動インストールが必要な場合)
+# https://github.com/junegunn/fzf.git ~/.fzf

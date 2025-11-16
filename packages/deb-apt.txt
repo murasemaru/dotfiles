@@ -1,0 +1,23 @@
+# dotfiles - Debian/Ubuntu パッケージ管理
+# 使い方: xargs sudo apt-get install -y < packages/deb-apt.txt
+
+# 必須
+zsh
+git
+
+# 開発ツール
+tmux
+neovim
+fzf
+bat
+
+# ビルドツール（rbenvなどに必要）
+build-essential
+libssl-dev
+libreadline-dev
+zlib1g-dev
+
+# オプション
+# curl
+# wget
+# ripgrep

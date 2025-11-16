@@ -1,13 +1,46 @@
 #!/bin/bash
 
 # dotfiles インストールスクリプト
-# 使い方: ./install.sh
+# 使い方:
+#   ./install.sh              # シンボリックリンクのみ
+#   ./install.sh --packages   # パッケージもインストール
 #
 # 対応OS: macOS, Linux (Debian, RedHat系), Windows (WSL)
 
 set -e
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# ============================================
+# オプション解析
+# ============================================
+INSTALL_PACKAGES=false
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --packages|-p)
+      INSTALL_PACKAGES=true
+      shift
+      ;;
+    --help|-h)
+      echo "使い方: $0 [オプション]"
+      echo ""
+      echo "オプション:"
+      echo "  --packages, -p    パッケージもインストール"
+      echo "  --help, -h        このヘルプを表示"
+      echo ""
+      echo "例:"
+      echo "  $0              # シンボリックリンクのみ"
+      echo "  $0 --packages   # パッケージもインストール"
+      exit 0
+      ;;
+    *)
+      echo "不明なオプション: $1"
+      echo "$0 --help でヘルプを表示"
+      exit 1
+      ;;
+  esac
+done
 
 # ============================================
 # カラー定義
@@ -22,6 +55,9 @@ NC='\033[0m' # No Color
 # ライブラリ読み込み
 # ============================================
 source "$DOTFILES_DIR/lib/os_detect.sh"
+if [ "$INSTALL_PACKAGES" = true ]; then
+  source "$DOTFILES_DIR/lib/package_installer.sh"
+fi
 
 # ============================================
 # OS検出
@@ -84,11 +120,25 @@ case "$OS" in
     ;;
 esac
 
+# ============================================
+# パッケージインストール（オプション）
+# ============================================
+if [ "$INSTALL_PACKAGES" = true ]; then
+  install_packages "$OS"
+fi
+
 echo ""
 echo -e "${GREEN}======================================${NC}"
 echo -e "${GREEN}  セットアップが完了しました！${NC}"
 echo -e "${GREEN}======================================${NC}"
 echo ""
+
+if [ "$INSTALL_PACKAGES" = false ]; then
+  echo -e "${YELLOW}ヒント: パッケージをインストールする場合は --packages オプションを使用してください${NC}"
+  echo -e "  ${BLUE}./install.sh --packages${NC}"
+  echo ""
+fi
+
 echo "次のコマンドで設定を反映してください:"
 echo -e "  ${BLUE}source ~/.zshrc${NC}"
 echo ""
