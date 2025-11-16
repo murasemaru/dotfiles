@@ -8,31 +8,37 @@ fi
 # =========================================
 # Oh My Zsh設定
 # =========================================
-export ZSH="$HOME/.oh-my-zsh"
+if [ -d "$HOME/.oh-my-zsh" ]; then
+  export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="powerlevel10k/powerlevel10k"
+  ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(
-  git
-  docker
-  docker-compose
-  rails
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  z
-)
+  plugins=(
+    git
+    docker
+    docker-compose
+    rails
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    z
+  )
 
-source $ZSH/oh-my-zsh.sh
+  source $ZSH/oh-my-zsh.sh
+fi
 
 # ========================================
 # PATH設定
 # ========================================
 typeset -U path PATH
 path=(
-/opt/homebrew/bin(N-/)
-$HOME/.nodebrew/current/bin
-$path
+  /opt/homebrew/bin(N-/)
+  $path
 )
+
+# nodebrew (Node.js version management)
+if [ -d "$HOME/.nodebrew/current/bin" ]; then
+  path=($HOME/.nodebrew/current/bin $path)
+fi
 
 # ========================================
 # dotfiles 設定
@@ -74,7 +80,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # ========================================
 # Docker CLI completions
 # ========================================
-fpath=(/Users/muraseshuji/.docker/completions $fpath)
+if [ -d "$HOME/.docker/completions" ]; then
+  fpath=($HOME/.docker/completions $fpath)
+fi
+
 autoload -Uz compinit
 compinit
 

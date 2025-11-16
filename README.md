@@ -99,10 +99,26 @@ cd dotfiles
 source ~/.zshrc
 ```
 
-**パッケージインストールについて:**
-- `--packages` オプションでOh My Zsh、Powerlevel10k、fzfなどを自動インストール
+**インストールスクリプトの機能:**
+- **自動依存関係チェック**: 不足しているソフトウェアを検出し、インストールを提案
+- **インタラクティブインストール**: Oh My Zsh、fzfなどの主要ツールをインストールするか確認
+- `--packages` オプションでパッケージ管理ファイルからまとめてインストール
 - パッケージマネージャー（Homebrew、apt、choco）が無い場合は先にインストールが必要
 - 詳細は `packages/manual.md` を参照
+
+**依存関係チェック例:**
+```
+⚠️  以下の必須ソフトウェアがインストールされていません:
+  - tmux (Terminal multiplexer)
+  - nvim (Neovim editor)
+
+💡 以下の推奨ソフトウェアがインストールされていません:
+  - fzf (Fuzzy finder)
+  - bat (Cat with syntax highlighting)
+
+インストールするには以下のコマンドを実行してください:
+  ./install.sh --packages
+```
 
 ### 既存マシンでの使用
 

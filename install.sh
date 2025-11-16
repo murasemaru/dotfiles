@@ -55,6 +55,7 @@ NC='\033[0m' # No Color
 # ライブラリ読み込み
 # ============================================
 source "$DOTFILES_DIR/lib/os_detect.sh"
+source "$DOTFILES_DIR/lib/software_check.sh"
 if [ "$INSTALL_PACKAGES" = true ]; then
   source "$DOTFILES_DIR/lib/package_installer.sh"
 fi
@@ -119,6 +120,17 @@ case "$OS" in
     echo "共通設定のみがインストールされました"
     ;;
 esac
+
+# ============================================
+# ソフトウェア依存関係チェック
+# ============================================
+prompt_install_missing_software
+
+# Oh My Zsh のチェック
+check_oh_my_zsh
+
+# fzf のチェック
+check_fzf
 
 # ============================================
 # パッケージインストール（オプション）
