@@ -21,6 +21,10 @@ if [ -d "$HOME/.oh-my-zsh" ]; then
     zsh-autosuggestions
     zsh-syntax-highlighting
     z
+    zsh-bat
+    you-should-use
+    copyfile
+    copypath
   )
 
   source $ZSH/oh-my-zsh.sh
