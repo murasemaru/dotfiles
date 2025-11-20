@@ -23,6 +23,9 @@ install_packages() {
     return 0
   fi
 
+  # Gitリポジトリのクローン（全OS共通）
+  install_git_repos "$packages_dir/git-repos.txt"
+
   case "$os_type" in
     macos)
       install_macos_packages "$packages_dir"
@@ -34,28 +37,12 @@ install_packages() {
       echo "WSL環境を検出しました"
       install_debian_packages "$packages_dir"
       ;;
-    windows)
-      install_windows_packages "$packages_dir"
-      ;;
     *)
       echo "このOSでは自動インストールをサポートしていません"
       echo "packages/ ディレクトリのファイルを参照して手動でインストールしてください"
       ;;
   esac
-
-  # Gitリポジトリのクローン（全OS共通）
-  echo ""
-  read -p "Oh My ZshやPowerlevel10kなどをインストールしますか？ (y/N): " response
-  if [[ "$response" =~ ^[Yy]$ ]]; then
-    install_git_repos "$packages_dir/git-repos.txt"
-  fi
-
-  echo ""
-  echo "✓ パッケージインストールが完了しました"
-  echo ""
-  echo "追加の手動設定が必要な場合があります:"
-  echo "  packages/manual.md を確認してください"
-}
+  }
 
 # macOS用パッケージインストール
 install_macos_packages() {
@@ -121,15 +108,6 @@ install_macos_packages() {
       fi
     fi
   done < "$packages_dir/macos.brewfile"
-
-  echo ""
-  echo "fzfの追加設定を実行しています..."
-  if command -v fzf >/dev/null 2>&1; then
-    read -p "fzfの追加設定を実行しますか？ (y/N): " response
-    if [[ "$response" =~ ^[Yy]$ ]]; then
-      $(brew --prefix)/opt/fzf/install --all --no-bash --no-fish
-    fi
-  fi
 }
 
 # Debian/Ubuntu用パッケージインストール
@@ -164,22 +142,6 @@ install_debian_packages() {
       fi
     fi
   done < "$packages_dir/deb-apt.txt"
-}
-
-# Windows用パッケージインストール
-install_windows_packages() {
-  local packages_dir="$1"
-
-  echo ""
-  echo "⚠️  Windows環境では手動でのインストールを推奨します"
-  echo ""
-  echo "Chocolateyでインストールする場合:"
-  echo "  1. 管理者権限でPowerShellを開く"
-  echo "  2. 以下のコマンドを実行:"
-  echo ""
-  echo "  Get-Content packages\\win-choco.txt | Where-Object { \$_ -notmatch '^#' -and \$_ -match '\\S' } | ForEach-Object { choco install \$_ -y }"
-  echo ""
-  echo "詳細: packages/manual.md を参照"
 }
 
 # Gitリポジトリのクローン

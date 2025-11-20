@@ -100,19 +100,15 @@ case "$OS" in
       echo -e "${YELLOW}警告: macos/install.sh が見つかりません${NC}"
     fi
     ;;
-  debian|redhat|linux)
+  debian|redhat|linux|wsl)
     if [ -f "$DOTFILES_DIR/linux/install.sh" ]; then
       bash "$DOTFILES_DIR/linux/install.sh"
     else
       echo -e "${YELLOW}警告: linux/install.sh が見つかりません${NC}"
     fi
     ;;
-  wsl|windows)
-    if [ -f "$DOTFILES_DIR/windows/install.sh" ]; then
-      bash "$DOTFILES_DIR/windows/install.sh"
-    else
-      echo -e "${YELLOW}警告: windows/install.sh が見つかりません${NC}"
-    fi
+  windows)
+    echo -e "${YELLOW}警告: windowsには対応しておりません。wslを使用してください${NC}"
     ;;
   unknown)
     echo ""
@@ -120,17 +116,6 @@ case "$OS" in
     echo "共通設定のみがインストールされました"
     ;;
 esac
-
-# ============================================
-# ソフトウェア依存関係チェック
-# ============================================
-prompt_install_missing_software "$OS"
-
-# Oh My Zsh のチェック
-check_oh_my_zsh
-
-# fzf のチェック
-check_fzf
 
 # ============================================
 # パッケージインストール（オプション）
