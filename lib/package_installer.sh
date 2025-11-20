@@ -3,6 +3,29 @@
 # パッケージインストーラー
 # 各OSに応じてパッケージをインストールする
 
+# 対話プロンプト（stdinがttyでない場合は/dev/ttyを使う）
+prompt_confirm() {
+  local prompt="$1"
+  local default="${2:-N}"
+  local response
+
+  if [ -t 0 ]; then
+    read -rp "$prompt" response
+  elif [ -r /dev/tty ]; then
+    # パイプなどでstdinが塞がれている場合でも対話できるようにする
+    read -rp "$prompt" response < /dev/tty
+  else
+    echo "$prompt (対話できないためデフォルト${default}を採用)"
+    response="$default"
+  fi
+
+  if [ -z "$response" ]; then
+    response="$default"
+  fi
+
+  [[ "$response" =~ ^[Yy]$ ]]
+}
+
 # パッケージインストールのメイン関数
 install_packages() {
   local os_type="$1"
@@ -17,8 +40,7 @@ install_packages() {
   echo "詳細: packages/manual.md を参照"
   echo ""
 
-  read -p "パッケージをインストールしますか？ (y/N): " response
-  if [[ ! "$response" =~ ^[Yy]$ ]]; then
+  if ! prompt_confirm "パッケージをインストールしますか？ (y/N): " "N"; then
     echo "パッケージインストールをスキップしました"
     return 0
   fi
@@ -51,8 +73,7 @@ install_macos_packages() {
   if ! command -v brew >/dev/null 2>&1; then
     echo "❌ Homebrewがインストールされていません"
     echo ""
-    read -p "Homebrewをインストールしますか？ (y/N): " response
-    if [[ "$response" =~ ^[Yy]$ ]]; then
+    if prompt_confirm "Homebrewをインストールしますか？ (y/N): " "N"; then
       echo "Homebrewをインストールしています..."
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -85,8 +106,7 @@ install_macos_packages() {
       if brew list --formula | grep -q "^${package}$"; then
         echo "✓ $package はすでにインストール済みです（スキップ）"
       else
-        read -p "brew install $package を実行しますか？ (y/N): " response
-        if [[ "$response" =~ ^[Yy]$ ]]; then
+        if prompt_confirm "brew install $package を実行しますか？ (y/N): " "N"; then
           brew install "$package"
         else
           echo "  → $package をスキップしました"
@@ -99,8 +119,7 @@ install_macos_packages() {
       if brew list --cask | grep -q "^${cask}$"; then
         echo "✓ $cask はすでにインストール済みです（スキップ）"
       else
-        read -p "brew install --cask $cask を実行しますか？ (y/N): " response
-        if [[ "$response" =~ ^[Yy]$ ]]; then
+        if prompt_confirm "brew install --cask $cask を実行しますか？ (y/N): " "N"; then
           brew install --cask "$cask"
         else
           echo "  → $cask をスキップしました"
@@ -119,8 +138,7 @@ install_debian_packages() {
   echo "sudoパスワードの入力が必要です"
 
   # パッケージリストを更新
-  read -p "apt-get update を実行しますか？ (y/N): " response
-  if [[ "$response" =~ ^[Yy]$ ]]; then
+  if prompt_confirm "apt-get update を実行しますか？ (y/N): " "N"; then
     sudo apt-get update
   fi
 
@@ -134,8 +152,7 @@ install_debian_packages() {
     if dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "install ok installed"; then
       echo "✓ $package はすでにインストール済みです（スキップ）"
     else
-      read -p "apt-get install $package を実行しますか？ (y/N): " response
-      if [[ "$response" =~ ^[Yy]$ ]]; then
+      if prompt_confirm "apt-get install $package を実行しますか？ (y/N): " "N"; then
         sudo apt-get install -y "$package"
       else
         echo "  → $package をスキップしました"
@@ -165,8 +182,7 @@ install_git_repos() {
       echo ""
       echo "リポジトリ: $repo"
       echo "インストール先: $dest"
-      read -p "クローンしますか？ (y/N): " response
-      if [[ "$response" =~ ^[Yy]$ ]]; then
+      if prompt_confirm "クローンしますか？ (y/N): " "N"; then
         git clone --depth=1 "$repo" "$dest" 2>/dev/null || {
           echo "  ❌ クローンに失敗しました"
           continue

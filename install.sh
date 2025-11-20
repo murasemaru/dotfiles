@@ -55,7 +55,6 @@ NC='\033[0m' # No Color
 # ライブラリ読み込み
 # ============================================
 source "$DOTFILES_DIR/lib/os_detect.sh"
-source "$DOTFILES_DIR/lib/software_check.sh"
 if [ "$INSTALL_PACKAGES" = true ]; then
   source "$DOTFILES_DIR/lib/package_installer.sh"
 fi

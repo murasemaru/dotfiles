@@ -13,3 +13,9 @@ https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/custom/plugins
 
 # zsh-syntax-highlighting (Oh My Zshプラグイン)
 https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+# zsh-bat (Oh My Zshプラグイン)
+https://github.com/fdellwing/zsh-bat.git ~/.oh-my-zsh/custom/plugins/zsh-bat
+
+# you-should-use (Oh My Zshプラグイン)
+https://github.com/MichaelAquilina/zsh-you-should-use.git ~/.oh-my-zsh/custom/plugins/you-should-use
