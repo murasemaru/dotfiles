@@ -73,6 +73,10 @@ nnoremap <Leader>q :q<CR>
 " 保存して終了
 nnoremap <Leader>wq :wq<CR>
 
+" gg/Gを先頭/末尾に移動
+nnoremap gg gg0
+nnoremap G G$
+
 " ===== 見た目 =====
 
 " シンタックスハイライト

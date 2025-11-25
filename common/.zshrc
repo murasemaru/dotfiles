@@ -121,3 +121,5 @@ if [ -d "$HOME/dotfiles-th/.zsh" ]; then
     source "$config_file"
   done
 fi
+
+. "$HOME/.local/bin/env"

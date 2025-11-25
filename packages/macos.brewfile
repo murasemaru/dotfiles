@@ -34,3 +34,4 @@ cask "docker"
 # brew "ripgrep"  # 高速なgrep代替
 # brew "eza"      # ls代替
 # cask "karabiner-elements"  # キーボードカスタマイズ
+brew "node"
