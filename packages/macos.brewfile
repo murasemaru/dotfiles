@@ -35,3 +35,6 @@ cask "docker"
 # brew "eza"      # ls代替
 # cask "karabiner-elements"  # キーボードカスタマイズ
 brew "node"
+brew "fd"
+brew "ripgrep"
+brew "broot"
