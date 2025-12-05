@@ -123,3 +123,5 @@ if [ -d "$HOME/dotfiles-th/.zsh" ]; then
 fi
 
 . "$HOME/.local/bin/env"
+
+source /Users/muraseshuji/.config/broot/launcher/bash/br

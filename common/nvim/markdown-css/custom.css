@@ -1,0 +1,40 @@
+/* 全体のコンテンツ幅を広く */
+body {
+  max-width: 100% !important;
+  padding: 20px;
+  background-color: #1e1e1e !important;
+  color: #d4d4d4 !important;
+}
+
+/* Mermaid図のコンテナ */
+.mermaid {
+  width: 100% !important;
+  overflow: visible !important;
+  margin: 20px 0 !important;
+}
+
+/* SVG自体を大きく */
+.mermaid svg {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* クラス図のフォントサイズを大きく */
+.mermaid .classLabel,
+.mermaid .label,
+.mermaid text {
+  font-size: 18px !important;
+}
+
+/* クラスボックスを大きく */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon {
+  stroke-width: 2px !important;
+}
+
+/* 行間を広く */
+.mermaid tspan {
+  line-height: 1.5 !important;
+}
