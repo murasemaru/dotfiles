@@ -18,6 +18,20 @@ libreadline-dev
 zlib1g-dev
 
 # オプション
-# curl
-# wget
-# ripgrep
+sway
+swaybg
+swayidle
+swaylock
+waybar
+wofi
+foot
+wl-clipboard
+grim
+slurp
+brightnessctl
+seatd
+meson
+wayland-protocols
+libwayland-dev
+libwlroots-dev
+libxkbcommon-dev
