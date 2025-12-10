@@ -4,7 +4,7 @@
 # zshのインストールとデフォルトシェル設定を確認・変更
 
 # zsh環境をチェックし、必要に応じてセットアップ
-# この関数はcommon/install.shから呼び出される
+# この関数は shell/install.sh から呼び出される
 check_and_setup_zsh() {
   echo "環境チェック: zsh"
 

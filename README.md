@@ -22,12 +22,16 @@
 
 ### 必須
 
-**この dotfiles 環境は zsh を前提としています。**
+**この dotfiles 環境は zsh と GNU stow を前提としています。**
 
 - **zsh** - デフォルトシェルとして使用
   - macOS: `brew install zsh`（通常はプリインストール済み）
   - Debian/Ubuntu: `sudo apt-get install zsh`
   - RedHat/CentOS: `sudo yum install zsh`
+- **GNU stow** - シンボリックリンク展開ツール（必須）
+  - macOS: `brew install stow`
+  - Debian/Ubuntu: `sudo apt-get install stow`
+  - RedHat/CentOS: `sudo yum install stow`
 
 インストールスクリプト（`install.sh`）は以下を自動で行います：
 - zsh のインストール確認
@@ -58,9 +62,9 @@
 - `.zshrc` - Zsh設定（Powerlevel10k、Oh My Zsh、Vi-mode + Emacs風キーバインド）
 - `.tmux.conf` - tmux設定（プレフィックス：Ctrl+O、Emacs準拠）
 - `.vimrc` - Vim設定
-- `nvim/` - Neovim設定（~/.config/nvim/）
+- `.config/nvim/` - Neovim設定（~/.config/nvim/）
   - `init.vim` - Emacs風キーバインド、自動補完、IME制御
-- `vscode/` - VSCode設定（~/Library/Application Support/Code/User/）
+- `Library/Application Support/Code/User/` (macOS) / `.config/Code/User/` (Linux) - VSCode設定（stow で配置）
   - `settings.json` - エディタ設定
   - `keybindings.json` - キーバインド設定（Emacs風カーソル移動）
 - `.gitconfig` - Git設定（SSH署名有効化）
@@ -131,7 +135,7 @@ brew install --cask visual-studio-code を実行しますか？ (y/N): n
 
 ### 既存マシンでの使用
 
-設定ファイルは `~/dotfiles` で管理され、ホームディレクトリにシンボリックリンクが作成されます。
+設定ファイルは `~/dotfiles` で管理され、ホームディレクトリに stow でシンボリックリンクが作成されます。
 
 設定を変更する場合は：
 
@@ -141,10 +145,10 @@ vim ~/.zshrc
 
 # または dotfiles ディレクトリで編集
 cd ~/dotfiles
-vim .zshrc
+vim shell/.zshrc
 
 # 変更をコミット
-git add .zshrc
+git add shell/.zshrc
 git commit -m "Update zsh configuration"
 git push
 ```
@@ -153,44 +157,51 @@ git push
 
 ```
 ~/dotfiles/
-├── install.sh                    # メインセットアップスクリプト（OS自動検出）
+├── install.sh                    # メインセットアップスクリプト（OS自動検出・stow呼び出し）
 ├── README.md                     # このファイル
-├── .gitignore                    # Git除外設定
-│
 ├── lib/                          # 共通関数ライブラリ
-│   └── functions.sh             # 各install.shから参照される共通関数
+│   ├── functions.sh
+│   ├── utils.sh
+│   ├── shell_check.sh
+│   └── os_detect.sh
 │
-├── common/                       # 全OS共通設定
-│   ├── install.sh               # 共通設定インストールスクリプト
-│   ├── .zshrc                   # Zsh設定
-│   ├── .tmux.conf               # tmux設定
-│   ├── .vimrc                   # Vim設定
-│   ├── .gitconfig               # Git設定
-│   ├── .zsh/                    # Zsh設定モジュール（6ファイル）
-│   │   ├── aliases.zsh          # 基本エイリアス
-│   │   ├── docker.zsh           # Docker関連
-│   │   ├── functions.zsh        # カスタム関数
-│   │   ├── vim-mode.zsh         # Vi-mode設定
-│   │   ├── zshrc-utils.zsh      # 設定管理
-│   │   ├── package-tracking.zsh # パッケージ自動記録
-│   │   └── README.md            # ドキュメント
-│   ├── nvim/                    # Neovim設定
-│   └── tmuxinator/              # tmux セッション定義
+├── shell/                        # シェル設定（共通）
+│   ├── install.sh               # stow shell
+│   ├── .zshrc
+│   └── .zsh/                    # Zsh設定モジュール
 │
-├── macos/                        # macOS専用設定
-│   ├── install.sh               # macOS設定インストールスクリプト
+├── configs-common/               # 共通の各種設定
+│   ├── install.sh               # stow configs-common
+│   ├── .tmux.conf
+│   ├── .vimrc
+│   ├── .gitconfig
+│   └── .config/                 # XDG_CONFIG_HOME 配下の設定
+│       ├── nvim/                # Neovim設定
+│       ├── tmuxinator/          # tmux セッション定義
+│       ├── broot/               # broot 設定
+│       ├── neofetch/            # neofetch 設定
+│       ├── uv/                  # uv 設定
+│       ├── fish/                # fish 設定
+│       ├── gh/                  # GitHub CLI 設定
+│       └── git/                 # Git 除外設定など
+│
+├── configs-macos/                # macOS専用設定
+│   ├── install.sh               # stow configs-macos
 │   ├── .zsh/                    # macOS専用zsh設定
-│   │   └── macos.zsh            # Homebrew、iTerm2、Docker等
-│   ├── karabiner/               # Karabiner設定
-│   └── vscode/                  # VSCode設定
+│   ├── .config/karabiner/       # Karabiner設定
+│   └── Library/Application Support/Code/User/   # VSCode設定 (macOS)
 │       ├── settings.json
 │       └── keybindings.json
 │
-├── linux/                        # Linux専用設定
-│   └── install.sh               # Linux設定インストールスクリプト
+├── configs-linux/                # Linux専用設定
+│   ├── install.sh               # stow configs-linux
+│   └── .config/Code/User/       # VSCode設定 (Linux)
+│       └── settings.json
 │
-└── windows/                      # Windows専用設定（WSL想定）
-    └── install.sh               # Windows設定インストールスクリプト
+└── packages/                    # パッケージリスト/管理
+    ├── macos.brewfile
+    ├── deb-apt.txt
+    └── git-repos.txt
 ```
 
 ### クロスプラットフォーム対応
@@ -198,13 +209,13 @@ git push
 - **OS自動検出**: `install.sh`がOSを自動検出し、適切な設定のみをインストール
   - macOS: `Darwin`
   - Linux: Debian、RedHat系
-  - Windows: WSL (Windows Subsystem for Linux)
-  - Git Bash: MINGW/MSYS環境
+  - Windows: WSL (Windows Subsystem for Linux) を Linux として扱う
+  - Git Bash: MINGW/MSYS環境（設定は適用しない）
 - **分離された設定**:
-  - `common/` - すべてのOSで共通する設定（Zsh、tmux、Vim、Neovim、Git）
-  - `macos/` - macOS専用（Karabiner、VSCode）
-  - `linux/` - Linux専用（今後追加予定）
-  - `windows/` - Windows専用（WSL想定、今後追加予定）
+  - `shell/` - すべてのOSで共通する Zsh 設定
+  - `configs-common/` - 共通のアプリ設定（tmux/Vim/Neovim/Git ほか）
+  - `configs-macos/` - macOS専用（Karabiner、VSCode、macOS向け zsh 追加設定）
+  - `configs-linux/` - Linux専用（VSCode設定）
 - **保守性**: 各ディレクトリに独立した`install.sh`で管理が容易
 - **共通関数**: `lib/functions.sh`に共通関数を集約（DRY原則）
 
@@ -429,21 +440,18 @@ choco install nodejs
 
 ## 設定ファイルの追加方法
 
-新しい設定ファイルを管理に追加する場合：
+新しい設定ファイルを管理に追加する場合（例: `~/.config/oil` を取り込みたい）：
 
 ```bash
-# 1. ファイルを dotfiles に移動
-mv ~/.newconfig ~/dotfiles/.newconfig
+# 1. ファイル/ディレクトリを dotfiles に移動（ホームを基準にパスを合わせる）
+mv ~/.config/oil ~/dotfiles/configs-common/.config/oil
 
-# 2. シンボリックリンクを作成
-ln -s ~/dotfiles/.newconfig ~/.newconfig
-
-# 3. install.sh にエントリを追加
-# install.sh を編集して create_symlink 行を追加
-
-# 4. Gitにコミット
+# 2. stow を再実行してリンクを張る
 cd ~/dotfiles
-git add .newconfig install.sh
-git commit -m "Add .newconfig"
+stow -t ~ configs-common
+
+# 3. Gitにコミット
+git add configs-common/.config/oil
+git commit -m "Add oil config"
 git push
 ```

@@ -45,7 +45,7 @@ bindkey -M vicmd 'k' up-line-or-history
 bindkey -M vicmd 'j' down-line-or-history
 
 # 現在のモードを右プロンプトに表示（オプション）
-# function vi_mode_prompt_info() {
-#   echo "${${KEYMAP/vicmd/[NORMAL]}/(main|viins)/[INSERT]}"
-# }
-# RPROMPT='$(vi_mode_prompt_info)'  # コメント解除で有効化
+ function vi_mode_prompt_info() {
+   echo "${${KEYMAP/vicmd/[NORMAL]}/(main|viins)/[INSERT]}"
+ }
+ RPROMPT='$(vi_mode_prompt_info)'  # コメント解除で有効化

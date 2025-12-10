@@ -57,17 +57,6 @@ PROMPT="%K{red}%F{black}%n ($(arch)):%~"$'\n'"%# %f%k"
 # ========================================
 export EDITOR='nvim'
 
-# ========================================
-# AWS
-# ========================================
-# AWS関連の設定は dotfiles-th で管理
-
-# ========================================
-# rbenv
-# ========================================
-# rbenv設定は dotfiles-th で管理（Techouse業務用）
-
-# ========================================
 # Completion system
 # ========================================
 # Docker CLI completions を読み込む場合は fpath へ追加
@@ -123,5 +112,3 @@ if [ -d "$HOME/dotfiles-th/.zsh" ]; then
 fi
 
 . "$HOME/.local/bin/env"
-
-source /Users/muraseshuji/.config/broot/launcher/bash/br

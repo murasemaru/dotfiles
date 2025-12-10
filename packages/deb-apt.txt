@@ -35,3 +35,4 @@ wayland-protocols
 libwayland-dev
 libwlroots-dev
 libxkbcommon-dev
+stow

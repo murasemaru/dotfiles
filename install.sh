@@ -82,28 +82,36 @@ if [ ! -d "$DOTFILES_DIR" ]; then
   exit 1
 fi
 
-# 共通設定のインストール
-if [ -f "$DOTFILES_DIR/common/install.sh" ]; then
-  bash "$DOTFILES_DIR/common/install.sh"
+# シェル設定のインストール
+if [ -f "$DOTFILES_DIR/shell/install.sh" ]; then
+  bash "$DOTFILES_DIR/shell/install.sh"
 else
-  echo -e "${RED}エラー: common/install.sh が見つかりません${NC}"
+  echo -e "${RED}エラー: shell/install.sh が見つかりません${NC}"
+  exit 1
+fi
+
+# 共通設定のインストール
+if [ -f "$DOTFILES_DIR/configs-common/install.sh" ]; then
+  bash "$DOTFILES_DIR/configs-common/install.sh"
+else
+  echo -e "${RED}エラー: configs-common/install.sh が見つかりません${NC}"
   exit 1
 fi
 
 # OS固有の設定のインストール
 case "$OS" in
   macos)
-    if [ -f "$DOTFILES_DIR/macos/install.sh" ]; then
-      bash "$DOTFILES_DIR/macos/install.sh"
+    if [ -f "$DOTFILES_DIR/configs-macos/install.sh" ]; then
+      bash "$DOTFILES_DIR/configs-macos/install.sh"
     else
-      echo -e "${YELLOW}警告: macos/install.sh が見つかりません${NC}"
+      echo -e "${YELLOW}警告: configs-macos/install.sh が見つかりません${NC}"
     fi
     ;;
   debian|redhat|linux|wsl)
-    if [ -f "$DOTFILES_DIR/linux/install.sh" ]; then
-      bash "$DOTFILES_DIR/linux/install.sh"
+    if [ -f "$DOTFILES_DIR/configs-linux/install.sh" ]; then
+      bash "$DOTFILES_DIR/configs-linux/install.sh"
     else
-      echo -e "${YELLOW}警告: linux/install.sh が見つかりません${NC}"
+      echo -e "${YELLOW}警告: configs-linux/install.sh が見つかりません${NC}"
     fi
     ;;
   windows)
